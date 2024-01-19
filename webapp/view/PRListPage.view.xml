@@ -1,0 +1,57 @@
+<mvc:View controllerName="zprap.zfprap.controller.PRListPage"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="idListPage" title="{i18n>title}">
+        <content>
+            <Table id="idPRListTable" mode="MultiSelect"
+                multiSelectMode="ClearAll"
+                items="{
+                    path: 'localModel>/PRList',
+                    sorter: {
+                        path: 'materials'
+                    }
+                }">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <content>
+                            <Title text="{i18n>prDetails}" level="H2"/>
+                            <ToolbarSpacer />
+                        </content>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column>
+                        <Text text="{i18n>materials}" />
+                    </Column>
+                    <Column	minScreenWidth="Phone">
+                        <Text text="{i18n>prNo}" />
+                    </Column>
+                    <Column minScreenWidth="Phone">
+                        <Text text="{i18n>approvedQty}" />
+                    </Column>
+                    <Column	minScreenWidth="Phone">
+                        <Text text="{i18n>supplyPlant}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem vAlign="Middle">
+                        <cells>
+                            <Text text="{localModel>materials}" />
+                            <Text text="{localModel>prNo}" />
+                            <Input value="{localModel>appQty}"/>
+                            <Input value="{localModel>supQty}"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="{i18n>details}" press="onDetailsButtonNavToPRdetailsPagePress"/>
+				<Button type="Success" text="{i18n>approve}"/>
+				<Button type="Negative" text="{i18n>reject}"/>
+			</OverflowToolbar>
+		</footer>
+    </Page>
+</mvc:View>

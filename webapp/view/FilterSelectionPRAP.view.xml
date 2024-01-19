@@ -1,0 +1,38 @@
+<mvc:View controllerName="zprap.zfprap.controller.FilterSelectionPRAP"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+	xmlns:f="sap.ui.layout.form">
+    <Page id="idSelectionPage" title="{i18n>title}">
+        <content>
+        <VBox class="sapUiSmallMargin">
+            <f:SimpleForm
+                editable="false"
+                layout="ResponsiveGridLayout"
+                singleContainerFullSize="false" >
+                <f:content>
+                    <Label text="{i18n>material}" />
+                    <Input required="true" showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
+                        id="idMaterialInput" showSuggestion="true" suggestionItems="{localModel>/MaterialsList}">
+                        <suggestionItems>
+                            <core:Item text="{localModel>MaterialId}"></core:Item>
+                        </suggestionItems>
+                    </Input>
+                    <Label text="{i18n>purchaseReqNo}" />
+                    <Input required="true"/>
+                    <Label text="{i18n>plant}" />
+                    <Input required="true"/>
+                    <Label text="{i18n>releaseCode}" />
+                    <Input required="true"/>
+                </f:content>
+            </f:SimpleForm>
+	    </VBox>
+        </content>
+        <footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button type="Emphasized" text="Search" press="onSearchButtonNavToListPress"/>
+			</OverflowToolbar>
+		</footer>
+    </Page>
+</mvc:View>
