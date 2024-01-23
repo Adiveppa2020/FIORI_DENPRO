@@ -1,9 +1,9 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
 	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<SelectDialog id="idMaterialDialog" title="{i18n>materials}"	items="{/ZPLANT_SEARCHSet}"
+	<SelectDialog id="idPlantDialog" title="{i18n>plants}"	items="{/ZPLANT_SEARCHSet}"
 		search=".onValueHelpSearch"	confirm=".onValueHelpClose" cancel=".onValueHelpClose"
 		customData:FilterProperty="{prop1: 'WERKS', prop2: ''}"
-		customData:inputId="idMaterialInput">
-		<StandardListItem title="{WERKS}" description="{NAME1}" id="idMaterialListItem"  />
+		customData:inputId="idPlantInput">
+		<StandardListItem title="{WERKS}" description="{NAME1}" id="idPlantListItem"  />
 	</SelectDialog>
 </core:FragmentDefinition>

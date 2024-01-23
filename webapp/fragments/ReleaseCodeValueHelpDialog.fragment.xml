@@ -1,0 +1,9 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
+	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<SelectDialog id="idReleaseCodesDialog" title="{i18n>releaseCodes}"	items="{/ZREL_CODE_SRCHSet}"
+		search=".onValueHelpSearch"	confirm=".onValueHelpClose" cancel=".onValueHelpClose"
+		customData:FilterProperty="{prop1: 'FRGCO', prop2: 'FRGCT'}"
+		customData:inputId="idReleaseCodeInput">
+		<StandardListItem title="{FRGCO}" description="{FRGCT}" id="idReleaseCodesListItem"  />
+	</SelectDialog>
+</core:FragmentDefinition>

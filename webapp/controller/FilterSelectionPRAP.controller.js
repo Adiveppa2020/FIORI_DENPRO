@@ -2,18 +2,19 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/Fragment",
-	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "zprap/zfprap/utils/ValueHelpFilter"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, UIComponent, Fragment, Filter, FilterOperator) {
+    function (Controller, UIComponent, Fragment, Filter, FilterOperator, ValueHelpFilter) {
         "use strict";
 
         return Controller.extend("zprap.zfprap.controller.FilterSelectionPRAP", {
             onInit: function () {
-
+                this.oFragment = {}
             },
 
             /**
@@ -37,43 +38,15 @@ sap.ui.define([
             },
 
             onInputMaterialsValueHelpRequest: function (oEvent) {
-                var sInputValue = oEvent.getSource().getValue(),
-                    oView = this.getView();
-
-                if (!this._pValueHelpDialog) {
-                    this._pValueHelpDialog = Fragment.load({
-                        id: oView.getId(),
-                        name: "zprap.zfprap.fragments.MaterialValueHelpDialog",
-                        controller: this
-                    }).then(function (oDialog) {
-                        oView.addDependent(oDialog);
-                        return oDialog;
-                    });
-                }
-                this._pValueHelpDialog.then(function (oDialog) {
-                    // Create a filter for the binding
-                    oDialog.getBinding("items").filter([new Filter("MaterialId", FilterOperator.Contains, sInputValue)]);
-                    // Open ValueHelpDialog filtered by the input's value
-                    oDialog.open(sInputValue);
-                });
+                ValueHelpFilter.onInputMaterialsValueHelpRequest.call(this, oEvent);
             },
 
             onValueHelpSearch: function (oEvent) {
-                var sValue = oEvent.getParameter("value");
-                var oFilter = new Filter("MaterialId", FilterOperator.Contains, sValue);
-
-                oEvent.getSource().getBinding("items").filter([oFilter]);
+                ValueHelpFilter.onValueHelpSearch.call(this, oEvent);
             },
 
             onValueHelpClose: function (oEvent) {
-                var oSelectedItem = oEvent.getParameter("selectedItem");
-                oEvent.getSource().getBinding("items").filter([]);
-
-                if (!oSelectedItem) {
-                    return;
-                }
-
-                this.byId("idMaterialInput").setValue(oSelectedItem.getTitle());
+                ValueHelpFilter.onValueHelpClose.call(this, oEvent);
             }
         });
     });

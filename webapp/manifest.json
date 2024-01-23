@@ -17,7 +17,7 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata/sap/ZC_CO_REPORT_CDS/",
+        "uri": "/sap/opu/odata/sap/ZMM_DEEP_ODATA_SRV/",
         "type": "OData",
         "settings": {
           "odataVersion": "2.0"
