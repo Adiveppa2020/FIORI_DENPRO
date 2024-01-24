@@ -47,6 +47,10 @@ sap.ui.define([
 
             onValueHelpClose: function (oEvent) {
                 ValueHelpFilter.onValueHelpClose.call(this, oEvent);
+            },
+
+            onChangeInputValue: function (oEvent, sFilterProperty) {
+                this.getView().getModel("localModel").getProperty(sFilterProperty, "test");
             }
         });
     });

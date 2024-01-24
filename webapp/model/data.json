@@ -1,26 +1,9 @@
 {
-    "PRList": [
-        {
-            "materials": "123",
-            "prNo": "111",
-            "appQty": 23.5,
-            "supQty": 35.6
-        },
-        {
-            "materials": "124",
-            "prNo": "112",
-            "appQty": 23.5,
-            "supQty": 35.6
-        }
-    ],
-    "MaterialsList": [
-        {
-            "MaterialId": "123",
-            "MaterialDesc": "Material T1"
-        },
-        {
-            "MaterialId": "124",
-            "MaterialDesc": "Material T2"
-        }
-    ]
+    "filterValues": {
+        "material": "",
+        "purchaseReqNo": "",
+        "plant": "",
+        "releaseCode": "",
+        "docType": ""
+    }
 }
