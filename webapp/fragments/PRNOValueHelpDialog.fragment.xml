@@ -1,7 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core"
 	xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<SelectDialog id="idPRItemsDialog" title="{i18n>purchaseReqItems}"	items="{/ZPR_SEARCHSet}"
-		search=".onValueHelpSearch"	confirm=".onValueHelpClose" cancel=".onValueHelpClose"
+		search=".onValueHelpSearch"	confirm=".onValueHelpClose($event, '/filterValues/purchaseReqNo')" 
+		cancel=".onValueHelpClose($event, '/filterValues/purchaseReqNo')"
 		customData:FilterProperty="{prop1: 'BANFN', prop2: 'BNFPO'}"
 		customData:inputId="idPurchaseReqNoInput">
 		<StandardListItem title="{BANFN}" description="{BNFPO}" id="idPRListItem"  />

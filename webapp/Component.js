@@ -4,10 +4,9 @@
 
 sap.ui.define([
         "sap/ui/core/UIComponent",
-        "sap/ui/Device",
         "zprap/zfprap/model/models"
     ],
-    function (UIComponent, Device, models) {
+    function (UIComponent, models) {
         "use strict";
 
         return UIComponent.extend("zprap.zfprap.Component", {
@@ -29,6 +28,7 @@ sap.ui.define([
 
                 // set the device model
                 this.setModel(models.createDeviceModel(), "device");
+                this.setModel(models.createLocalModel(), "localModel");
             }
         });
     }

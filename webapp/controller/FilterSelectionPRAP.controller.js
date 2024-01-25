@@ -1,15 +1,13 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/ui/core/Fragment",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "zprap/zfprap/utils/ValueHelpFilter"
+    "zprap/zfprap/utils/ValueHelpFilter",
+    "zprap/zfprap/utils/Utils"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, UIComponent, Fragment, Filter, FilterOperator, ValueHelpFilter) {
+    function (Controller, UIComponent, ValueHelpFilter, Utils) {
         "use strict";
 
         return Controller.extend("zprap.zfprap.controller.FilterSelectionPRAP", {
@@ -32,9 +30,11 @@ sap.ui.define([
              * @private
              */
             onSearchButtonNavToListPress: function () {
-                this.getRouter().navTo("prlistpage", {
-                    id: "123"
-                });
+                if(Utils.checkMandatoryParams.call(this)) {
+                    this.getRouter().navTo("prlistpage", {
+                        materialId: this.byId("idMaterialInput").getValue()
+                    });
+                }
             },
 
             onInputMaterialsValueHelpRequest: function (oEvent) {
@@ -45,12 +45,16 @@ sap.ui.define([
                 ValueHelpFilter.onValueHelpSearch.call(this, oEvent);
             },
 
-            onValueHelpClose: function (oEvent) {
-                ValueHelpFilter.onValueHelpClose.call(this, oEvent);
+            onValueHelpClose: function (oEvent, sValueInputProperty) {
+                ValueHelpFilter.onValueHelpClose.call(this, oEvent, sValueInputProperty);
             },
 
-            onChangeInputValue: function (oEvent, sFilterProperty) {
-                this.getView().getModel("localModel").getProperty(sFilterProperty, "test");
+            onChangeInputValue: function (oEvent, sValueInputProperty) {
+                this.getOwnerComponent().getModel("localModel").setProperty(sValueInputProperty, oEvent.getSource().getValue());
+            },
+
+            onChangeInputValueComboBox: function (oEvent, sValueInputProperty) {
+                this.getOwnerComponent().getModel("localModel").setProperty(sValueInputProperty, oEvent.getSource().getSelectedKey());
             }
         });
     });

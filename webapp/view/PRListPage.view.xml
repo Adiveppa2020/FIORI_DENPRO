@@ -5,16 +5,12 @@
         <content>
             <Table id="idPRListTable" mode="MultiSelect"
                 multiSelectMode="ClearAll"
-                items="{
-                    path: 'localModel>/PRList',
-                    sorter: {
-                        path: 'materials'
-                    }
-                }">
+                items="{path: 'localModel>/HeadDetails'}"
+                sticky="ColumnHeaders" growing="true" growingThreshold="1000"> 
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <Title text="{i18n>prDetails}" level="H2"/>
+                            <Title text="{i18n>prDetails}({localModel>/headTableCount})" level="H2"/>
                             <ToolbarSpacer />
                         </content>
                     </OverflowToolbar>
@@ -36,10 +32,10 @@
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{localModel>materials}" />
-                            <Text text="{localModel>prNo}" />
-                            <Input value="{localModel>appQty}"/>
-                            <Input value="{localModel>supQty}"/>
+                            <Text text="{localModel>MATNR}" />
+                            <Text text="{localModel>BANFN}" />
+                            <Input value="{localModel>A_MENGE}"/>
+                            <Input value="{localModel>RESWK}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

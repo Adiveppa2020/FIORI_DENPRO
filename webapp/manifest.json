@@ -22,10 +22,6 @@
         "settings": {
           "odataVersion": "2.0"
         }
-      },
-      "localData":{
-        "uri": "/model/data.json",
-        "type": "JSON"
       }
     }
   },
@@ -46,7 +42,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "dependencies": {
       "minUI5Version": "1.114.9",
       "libs": {
@@ -73,11 +69,6 @@
       },
       "": {
         "dataSource": "mainService",
-        "preload": true,
-        "settings": {}
-      },
-      "localModel": {
-        "dataSource": "localData",
         "preload": true,
         "settings": {}
       }
@@ -108,7 +99,7 @@
           ]
         },
         {
-          "pattern": "prlist/{id}",
+          "pattern": "prlist/{materialId}",
           "name": "prlistpage",
           "target": [
             "prlistpage"

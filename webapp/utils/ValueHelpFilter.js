@@ -34,11 +34,14 @@ sap.ui.define([
         onValueHelpSearch: function (oEvent) {
             const sFilterProperty = oEvent.getSource().getCustomData()[0].getValue().prop1;
             const sValue = oEvent.getParameter("value");
-            const oFilter = new Filter(sFilterProperty, FilterOperator.Contains, sValue);
-            oEvent.getSource().getBinding("items").filter([oFilter]);
+            let aFilter = [];
+            if (sValue) {
+                aFilter = [new Filter(sFilterProperty, FilterOperator.Contains, sValue)];
+            }
+            oEvent.getSource().getBinding("items").filter(aFilter);
         },
 
-        onValueHelpClose: function (oEvent) {
+        onValueHelpClose: function (oEvent, sValueInputProperty) {
             var oSelectedItem = oEvent.getParameter("selectedItem");
             oEvent.getSource().getBinding("items").filter([]);
             if (!oSelectedItem) {
@@ -46,6 +49,7 @@ sap.ui.define([
             }
             const sInputFieldId = oEvent.getSource().getCustomData()[1].getValue();
             this.byId(sInputFieldId).setValue(oSelectedItem.getTitle());
+            this.getOwnerComponent().getModel("localModel").setProperty(sValueInputProperty, oSelectedItem.getTitle());
         }
     }
 });

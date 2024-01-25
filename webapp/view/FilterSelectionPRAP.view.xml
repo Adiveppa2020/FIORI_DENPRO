@@ -14,31 +14,35 @@
                     <Label text="{i18n>material}" />
                     <Input required="true" showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
                         id="idMaterialInput" customData:dialogName="MaterialValueHelpDialog"
-                        customData:FilterProperty="{prop1: 'WERKS', prop2: ''}"
+                        customData:FilterProperty="{prop1: 'MATNR', prop2: 'MAKTX'}"
                         value="{localData>/filterValues/material}"
-                        change="onChangeInputValue">
+                        change="onChangeInputValue($event, '/filterValues/material')">
                     </Input>
                     <Label text="{i18n>purchaseReqNo}" />
                     <Input required="true" id="idPurchaseReqNoInput"
                         showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
                         customData:dialogName="PRNOValueHelpDialog"
                         customData:FilterProperty="{prop1: 'BANFN', prop2: 'BNFPO'}"
-                        value="{localData>/filterValues/purchaseReqNo}"/>
+                        value="{localData>/filterValues/purchaseReqNo}"
+                        change="onChangeInputValue($event, '/filterValues/purchaseReqNo')"/>
                     <Label text="{i18n>plant}" />
                     <Input required="true" id="idPlantInput"
                         showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
                         customData:dialogName="PlantValueHelpDialog"
                         customData:FilterProperty="{prop1: 'WERKS', prop2: 'NAME1'}"
-                        value="{localData>/filterValues/plant}"/>
+                        value="{localData>/filterValues/plant}"
+                        change="onChangeInputValue($event, '/filterValues/plant')"/>
                     <Label text="{i18n>releaseCode}" />
                     <Input required="true" id="idReleaseCodeInput"
                         showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
                         customData:dialogName="ReleaseCodeValueHelpDialog"
                         customData:FilterProperty="{prop1: 'FRGCO', prop2: 'FRGCT'}"
-                        value="{localData>/filterValues/releaseCode}"/>
+                        value="{localData>/filterValues/releaseCode}"
+                        change="onChangeInputValue($event, '/filterValues/releaseCode')"/>
                     <Label text="{i18n>documentType}" required="true"/>
-                    <ComboBox items="{path: '/ZDOC_TYPE_SRCHSet'}" showSecondaryValues= "true"
-                        selectedKey="{localData>/filterValues/docType}">
+                    <ComboBox id="idDocType" items="{path: '/ZDOC_TYPE_SRCHSet'}" showSecondaryValues= "true"
+                        selectedKey="{localData>/filterValues/docType}"
+                        change="onChangeInputValueComboBox($event, '/filterValues/docType')">
                         <core:ListItem key="{BSART}" text="{BATXT}" additionalText = "{BSART}"/>
                     </ComboBox>
                 </f:content>
