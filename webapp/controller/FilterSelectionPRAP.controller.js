@@ -30,9 +30,16 @@ sap.ui.define([
              * @private
              */
             onSearchButtonNavToListPress: function () {
-                if(Utils.checkMandatoryParams.call(this)) {
+                if (Utils.checkMandatoryParams.call(this)) {
+                    const oView = this.getView();
                     this.getRouter().navTo("prlistpage", {
-                        materialId: this.byId("idMaterialInput").getValue()
+                        releaseCode: this.byId("idReleaseCodeInput").getValue(),
+                        "?query": {
+                            plant: oView.byId("idPlantInput").getValue(),
+                            material: oView.byId("idMaterialInput").getValue(),
+                            purchaseReqNo: oView.byId("idPurchaseReqNoInput").getValue(),
+                            docType: oView.byId("idDocType").getSelectedKey()
+                        }
                     });
                 }
             },

@@ -6,7 +6,8 @@
             <Table id="idPRListTable" mode="MultiSelect"
                 multiSelectMode="ClearAll"
                 items="{path: 'localModel>/HeadDetails'}"
-                sticky="ColumnHeaders" growing="true" growingThreshold="1000"> 
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="1000"
+                selectionChange="onSelectPRList" updateFinished="updateFinishedTable" > 
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
@@ -30,12 +31,12 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem vAlign="Middle">
+                    <ColumnListItem vAlign="Middle" id="idColumnListItem">
                         <cells>
                             <Text text="{localModel>MATNR}" />
                             <Text text="{localModel>BANFN}" />
                             <Input value="{localModel>A_MENGE}"/>
-                            <Input value="{localModel>RESWK}"/>
+                            <Input value="{localModel>RESWK}" />
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -44,9 +45,12 @@
         <footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Emphasized" text="{i18n>details}" press="onDetailsButtonNavToPRdetailsPagePress"/>
-				<Button type="Success" text="{i18n>approve}"/>
-				<Button type="Negative" text="{i18n>reject}"/>
+				<Button type="Emphasized" text="{i18n>details}" 
+                     enabled="{localModel>/enableListPRActions}"
+                     press="onDetailsButtonNavToPRdetailsPagePress"/>
+				<Button type="Success" text="{i18n>approve}" enabled="{localModel>/enableListPRActions}"
+                    press="onPressApproveHead"/>
+				<Button type="Negative" text="{i18n>reject}" enabled="{localModel>/enableListPRActions}"/>
 			</OverflowToolbar>
 		</footer>
     </Page>

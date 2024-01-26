@@ -4,16 +4,12 @@
     <Page id="idPRDetailsPage" title="{i18n>title}">
         <content>
             <Table id="idPRDetailsListTable"
-                items="{
-                    path: '/ProductCollection',
-                    sorter: {
-                        path: 'Name'
-                    }
-                }">
+                items="{path: 'localModel>/LineDetails'}"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="1000">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <Title text="{i18n>prDetails}" level="H2"/>
+                            <Title text="{i18n>prDetails}({localModel>/lineTableCount})" level="H2"/>
                             <ToolbarSpacer />
                         </content>
                     </OverflowToolbar>
@@ -35,10 +31,10 @@
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{materials}" />
-                            <Text text="{prNo}" />
-                            <Input value="{appQty}"/>
-                            <Input value="{supQty}"/>
+                            <Text text="{localModel>MATNR}" />
+                            <Text text="{localModel>BANFN}" />
+                            <Input value="{localModel>A_MENGE}"/>
+                            <Input value="{localModel>RESWK}"/>
                         </cells>
                     </ColumnListItem>
                 </items>
@@ -47,7 +43,8 @@
         <footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>
-				<Button type="Emphasized" text="{i18n>back}" press="onBackButtonNavToPRListPagePress"/>
+				<Button type="Emphasized" text="{i18n>back}" 
+                    press="onBackButtonNavToPRListPagePress"/>
 				<Button type="Success" text="{i18n>approve}"/>
 				<Button type="Negative" text="{i18n>reject}"/>
 			</OverflowToolbar>

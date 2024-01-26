@@ -12,29 +12,29 @@ sap.ui.define([
     function checkInputValue(oView) {
         let sInputlValue = oView.byId("idMaterialInput").getValue();
         let message = "";
-        if (!sInputlValue) {
-            message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "material"));
-            return {
-                error: true,
-                message: message
-            };
-        }
-        sInputlValue = oView.byId("idPurchaseReqNoInput").getValue();
-        if (!sInputlValue) {
-            message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "purchaseReqNo"));
-            return {
-                error: true,
-                message: message
-            };
-        }
-        sInputlValue = oView.byId("idPlantInput").getValue();
-        if (!sInputlValue) {
-            message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "plant"));
-            return {
-                error: true,
-                message: message
-            };
-        }
+        // if (!sInputlValue) {
+        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "material"));
+        //     return {
+        //         error: true,
+        //         message: message
+        //     };
+        // }
+        // sInputlValue = oView.byId("idPurchaseReqNoInput").getValue();
+        // if (!sInputlValue) {
+        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "purchaseReqNo"));
+        //     return {
+        //         error: true,
+        //         message: message
+        //     };
+        // }
+        // sInputlValue = oView.byId("idPlantInput").getValue();
+        // if (!sInputlValue) {
+        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "plant"));
+        //     return {
+        //         error: true,
+        //         message: message
+        //     };
+        // }
         sInputlValue = oView.byId("idReleaseCodeInput").getValue();
         if (!sInputlValue) {
             message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "releaseCode"));
@@ -53,7 +53,7 @@ sap.ui.define([
         return { error: false };
     }
 
-    function displayErrorMessagePopup (sMessage) {
+    function displayErrorMessagePopup(sMessage) {
         MessageBox.error(sMessage, {
             actions: [MessageBox.Action.CLOSE],
             emphasizedAction: MessageBox.Action.CLOSE,
@@ -64,6 +64,7 @@ sap.ui.define([
     }
 
     return {
+        getI18nText,
         displayErrorMessagePopup,
         checkMandatoryParams: function () {
             let oInputlRequire = checkInputValue(this.getView());
@@ -97,6 +98,30 @@ sap.ui.define([
                     }
                 });
             });
+        },
+
+        updateOdataCall: function (sEntityName, oData) {
+            const oDataModel = this.getOwnerComponent().getModel();
+            return new Promise(function (resolve, reject) {
+                oDataModel.update(sEntityName, oData,
+                    {
+                        success: function (oData, response) {
+                            resolve(oData);
+                        },
+                        error: function (oError) {
+                            reject(oError);
+                        }
+                    });
+            });
+        },
+
+        updateActionEnable: function (aSelectedContext) {
+            const oLocalModel = this.getOwnerComponent().getModel("localModel");
+            if (aSelectedContext && aSelectedContext.length > 0) {
+                oLocalModel.setProperty("/enableListPRActions", true);
+                return;
+            }
+            oLocalModel.setProperty("/enableListPRActions", false);
         }
     }
 });

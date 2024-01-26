@@ -99,14 +99,14 @@
           ]
         },
         {
-          "pattern": "prlist/{materialId}",
+          "pattern": "prlist/{releaseCode}/param:?query:",
           "name": "prlistpage",
           "target": [
             "prlistpage"
           ]
         },
         {
-          "pattern": "prdetails/{id}",
+          "pattern": "prdetails/{material}/param:?query:",
           "name": "prdetailslistpage",
           "target": [
             "prdetailslistpage"

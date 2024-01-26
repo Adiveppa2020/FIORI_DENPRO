@@ -30,8 +30,11 @@ sap.ui.define([
                         "docType": ""
                     },
                     headTableCount: 0,
+                    lineTableCount: 0,
                     "HeadDetails": [],
-                    "LineItem": []
+                    "LineDetails": [],
+                    "LineItem": [],
+                    enableListPRActions: false
                 });
             }
         };
