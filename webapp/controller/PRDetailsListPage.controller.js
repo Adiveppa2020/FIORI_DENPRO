@@ -41,24 +41,24 @@ sap.ui.define([
 			const aFilter = Utils.getFilterArray([
 				{
 					sPath: "MATNR",
-					sValue: "" //param.material
+					sValue: param.material
 				},
 				{
 					sPath: "BANFN",
 					sValue: param["?query"].purchaseReqNo
 				},
-				{
-					sPath: "WERKS",
-					sValue: param["?query"].plant
-				},
-				{
-					sPath: "FRGZU",
-					sValue: param["?query"].releaseCode
-				},
-				{
-					sPath: "BSART",
-					sValue: param["?query"].docType
-				}
+				// {
+				// 	sPath: "WERKS",
+				// 	sValue: param["?query"].plant
+				// },
+				// {
+				// 	sPath: "FRGZU",
+				// 	sValue: param["?query"].releaseCode
+				// },
+				// {
+				// 	sPath: "BSART",
+				// 	sValue: param["?query"].docType
+				// }
 			]);
 			const oView = this.getView();
 			try {

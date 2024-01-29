@@ -52,7 +52,7 @@ sap.ui.define([
 			const oView = this.getView();
 			try {
 				oView.setBusy(true);
-				const oData = await Utils.readOdataCall.call(this, "/ZHeadSet", aFilter);
+				const oData = await Utils.readOdataCall.call(this, "/ZHeadSet", aFilter, {$expand: "ZITEMNAV"});
 				oLocalModel.setProperty("/HeadDetails", oData.results);
 				oLocalModel.setProperty("/headTableCount", (oData.results && oData.results.length));
 				oView.setBusy(false);

@@ -79,16 +79,17 @@ sap.ui.define([
             const aFilter = [];
             aFilterParam.forEach(function (item) {
                 if (item.sValue) {
-                    aFilter.push(new Filter(item.sPath, FilterOperator.Contains, item.sValue));
+                    aFilter.push(new Filter(item.sPath, FilterOperator.EQ, item.sValue));
                 }
             });
             return aFilter;
         },
 
-        readOdataCall: function (sEntityName, aFilter) {
+        readOdataCall: function (sEntityName, aFilter, urlParams) {
             const oDataModel = this.getOwnerComponent().getModel();
             return new Promise(function (resolve, reject) {
                 oDataModel.read(sEntityName, {
+                    urlParameters: urlParams,
                     filters: aFilter,
                     success: function (oData, response) {
                         resolve(oData);
