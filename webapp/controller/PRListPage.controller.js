@@ -50,17 +50,7 @@ sap.ui.define([
 				}
 			]);
 			const oView = this.getView();
-			try {
-				oView.setBusy(true);
-				const oData = await Utils.readOdataCall.call(this, "/ZHeadSet", aFilter, {$expand: "ZITEMNAV"});
-				oLocalModel.setProperty("/HeadDetails", oData.results);
-				oLocalModel.setProperty("/headTableCount", (oData.results && oData.results.length));
-				oView.setBusy(false);
-				oView.byId("idPRListTable").removeSelections(false);
-			} catch (error) {
-				oView.setBusy(false);
-				Utils.displayErrorMessagePopup("Error while fetching PR List" + error?.message);
-			}
+			oView.byId("idPRListTable").getBinding("items").filter(aFilter);
 		},
 
 		onDetailsButtonNavToPRdetailsPagePress: function () {
@@ -69,11 +59,11 @@ sap.ui.define([
 			if (aSelectedContext && aSelectedContext.length === 1) {
 				const oContext = aSelectedContext[0].getObject();
 				this.getRouter().navTo("prdetailslistpage", {
-					material: oContext.MATNR,
+					purchaseReqNo:oContext.BANFN,
 					"?query": {
 						plant: oContext.WERKS,
 						releaseCode: oContext.FRGZU,
-						purchaseReqNo:oContext.BANFN,
+						material: oContext.MATNR,
 						docType:oContext.BSART
 					}
 				});
@@ -88,6 +78,8 @@ sap.ui.define([
 		},
 
 		updateFinishedTable: function (oEvent) {
+			const oLocalModel = this.getOwnerComponent().getModel("localModel");
+			oLocalModel.setProperty("/headTableCount", oEvent.getParameter("total"));
 			const aSelectedContext = oEvent.getSource().getSelectedContexts() || [];
 			Utils.updateActionEnable.call(this, aSelectedContext);
 		},
@@ -102,6 +94,24 @@ sap.ui.define([
 			} catch (error) {
 				oView.setBusy(false);
 				Utils.displayErrorMessagePopup("Error while updating PR List" + error?.message);
+			}
+		},
+
+		onPressStockView: async function () {
+			const oLocalModel = this.getOwnerComponent().getModel("localModel");
+			const oView = this.getView();
+			const aSelectedContext = oView.byId("idPRListTable").getSelectedContexts();
+			if (aSelectedContext && aSelectedContext.length === 1) {
+				const oContext = aSelectedContext[0].getObject();
+				const aFilter = Utils.getFilterArray([
+					{
+						sPath: "MATNR",
+						sValue: oContext.MATNR || ""
+					}
+				]);
+				Utils.openStoackDetailsFragment.call(this, aFilter);
+			} else {
+				Utils.displayErrorMessagePopup(Utils.getI18nText(oView, "errorMessageMultiSelect"));
 			}
 		}
 	});

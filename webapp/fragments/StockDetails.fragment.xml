@@ -1,0 +1,46 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog id="idStackDetailsDialog" noDataText="No Data Found"
+		title="{i18n>stockDetailList}"
+		confirm=".handleClose"
+		cancel=".handleClose"
+		items="{/ZSTOCK_QTYSet}">
+		<ColumnListItem vAlign="Middle">
+			<cells>
+				<Text text="{MATNR}" />
+				<Text text="{WERKS}" />
+				<Text text="{MENGE}" />
+				<Text text="{A_MENGE}" />
+                <Text text="{B_MENGE}" />
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column>
+				<header>
+					<Text text="{i18n>material}" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{i18n>supplyPlant}" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{i18n>stock}" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{i18n>allocatedStock}" />
+				</header>
+			</Column>
+			<Column>
+				<header>
+					<Text text="{i18n>balanceStock}" />
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

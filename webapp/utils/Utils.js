@@ -1,8 +1,9 @@
 sap.ui.define([
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (MessageBox, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment"
+], function (MessageBox, Filter, FilterOperator, Fragment) {
     "use strict";
 
     function getI18nText(oView, key, parts) {
@@ -12,29 +13,6 @@ sap.ui.define([
     function checkInputValue(oView) {
         let sInputlValue = oView.byId("idMaterialInput").getValue();
         let message = "";
-        // if (!sInputlValue) {
-        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "material"));
-        //     return {
-        //         error: true,
-        //         message: message
-        //     };
-        // }
-        // sInputlValue = oView.byId("idPurchaseReqNoInput").getValue();
-        // if (!sInputlValue) {
-        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "purchaseReqNo"));
-        //     return {
-        //         error: true,
-        //         message: message
-        //     };
-        // }
-        // sInputlValue = oView.byId("idPlantInput").getValue();
-        // if (!sInputlValue) {
-        //     message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "plant"));
-        //     return {
-        //         error: true,
-        //         message: message
-        //     };
-        // }
         sInputlValue = oView.byId("idReleaseCodeInput").getValue();
         if (!sInputlValue) {
             message = getI18nText(oView, "messageMandatoryField", getI18nText(oView, "releaseCode"));
@@ -43,13 +21,6 @@ sap.ui.define([
                 message: message
             };
         }
-        // sInputlValue = oView.byId("idDocType").getSelectedKey();
-        // if (!sInputlValue) {
-        //     return {
-        //         error: true,
-        //         message: ""
-        //     };
-        // }
         return { error: false };
     }
 
@@ -123,6 +94,25 @@ sap.ui.define([
                 return;
             }
             oLocalModel.setProperty("/enableListPRActions", false);
+        },
+
+        openStoackDetailsFragment: function (aFilter) {
+            const oView = this.getView();
+            if (!this._stockDetailTableDialog) {
+                this._stockDetailTableDialog = Fragment.load({
+                    id: oView.getId(),
+                    name: "zprap.zfprap.fragments.StockDetails",
+                    controller: this
+                }).then(function (oValueHelpDialog) {
+                    oView.addDependent(oValueHelpDialog);
+                    return oValueHelpDialog;
+                });
+            }
+            this._stockDetailTableDialog.then(function (oValueHelpDialog) {
+                oView.byId("idStackDetailsDialog").getBinding("items").filter(aFilter);
+                oValueHelpDialog.open();
+                oValueHelpDialog._oSubHeader && oValueHelpDialog._oSubHeader.setVisible(false);
+            }.bind(this));
         }
     }
 });

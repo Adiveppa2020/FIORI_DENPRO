@@ -34,7 +34,9 @@ sap.ui.define([
                     "HeadDetails": [],
                     "LineDetails": [],
                     "LineItem": [],
-                    enableListPRActions: false
+                    enableListPRActions: false,
+                    stockTableCount: 0,
+                    StockDetails: []
                 });
             }
         };

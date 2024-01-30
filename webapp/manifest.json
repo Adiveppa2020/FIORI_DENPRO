@@ -106,7 +106,7 @@
           ]
         },
         {
-          "pattern": "prdetails/{material}/param:?query:",
+          "pattern": "prdetails/{purchaseReqNo}/param:?query:",
           "name": "prdetailslistpage",
           "target": [
             "prdetailslistpage"

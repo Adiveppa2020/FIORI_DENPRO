@@ -33,7 +33,7 @@ sap.ui.define([
                 if (Utils.checkMandatoryParams.call(this)) {
                     const oView = this.getView();
                     this.getRouter().navTo("prlistpage", {
-                        releaseCode: this.byId("idReleaseCodeInput").getValue(),
+                        releaseCode: this.byId("idReleaseCodeInput").getSelectedKey(),
                         "?query": {
                             plant: oView.byId("idPlantInput").getValue(),
                             material: oView.byId("idMaterialInput").getValue(),

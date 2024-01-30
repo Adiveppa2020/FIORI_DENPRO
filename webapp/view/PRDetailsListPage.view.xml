@@ -4,8 +4,9 @@
     <Page id="idPRDetailsPage" title="{i18n>title}">
         <content>
             <Table id="idPRDetailsListTable"
-                items="{path: 'localModel>/LineDetails'}"
-                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="1000">
+                items="{/ZLineSet}"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="30"
+                growingScrollToLoad="true" updateFinished="updateFinishedTable">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
@@ -31,10 +32,10 @@
                 <items>
                     <ColumnListItem vAlign="Middle">
                         <cells>
-                            <Text text="{localModel>MATNR}" />
-                            <Text text="{localModel>BANFN}" />
-                            <Input value="{localModel>A_MENGE}"/>
-                            <Input value="{localModel>RESWK}"/>
+                            <Text text="{MATNR}" />
+                            <Text text="{BANFN}" />
+                            <Input value="{A_MENGE}"/>
+                            <Input value="{RESWK}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

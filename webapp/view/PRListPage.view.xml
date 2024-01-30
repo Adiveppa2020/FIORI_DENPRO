@@ -5,14 +5,17 @@
         <content>
             <Table id="idPRListTable" mode="MultiSelect"
                 multiSelectMode="ClearAll"
-                items="{path: 'localModel>/HeadDetails'}"
-                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="1000"
+                items="{path: '/ZHeadSet', parameters: {expand: 'ZITEMNAV'}}"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="30"
+                growingScrollToLoad="true"
                 selectionChange="onSelectPRList" updateFinished="updateFinishedTable" > 
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>
-                            <Title text="{i18n>prDetails}({localModel>/headTableCount})" level="H2"/>
+                            <Title text="{i18n>prList}({localModel>/headTableCount})" level="H2"/>
                             <ToolbarSpacer />
+                            <Button text="{i18n>stockDetailBtn}" id="idStockDetailBtn" type="Emphasized"
+                                press="onPressStockView" enabled="{localModel>/enableListPRActions}"></Button>
                         </content>
                     </OverflowToolbar>
                 </headerToolbar>
@@ -33,10 +36,10 @@
                 <items>
                     <ColumnListItem vAlign="Middle" id="idColumnListItem">
                         <cells>
-                            <Text text="{localModel>MATNR}" />
-                            <Text text="{localModel>BANFN}" />
-                            <Input value="{localModel>A_MENGE}"/>
-                            <Input value="{localModel>RESWK}" />
+                            <Text text="{MATNR}" />
+                            <Text text="{BANFN}" />
+                            <Input value="{A_MENGE}"/>
+                            <Input value="{RESWK}" />
                         </cells>
                     </ColumnListItem>
                 </items>

@@ -37,40 +37,19 @@ sap.ui.define([
 		},
 
 		loadData: async function (param) {
-			const oLocalModel = this.getOwnerComponent().getModel("localModel");
 			const aFilter = Utils.getFilterArray([
 				{
-					sPath: "MATNR",
-					sValue: param.material
-				},
-				{
 					sPath: "BANFN",
-					sValue: param["?query"].purchaseReqNo
-				},
-				// {
-				// 	sPath: "WERKS",
-				// 	sValue: param["?query"].plant
-				// },
-				// {
-				// 	sPath: "FRGZU",
-				// 	sValue: param["?query"].releaseCode
-				// },
-				// {
-				// 	sPath: "BSART",
-				// 	sValue: param["?query"].docType
-				// }
+					sValue: param.purchaseReqNo
+				}
 			]);
 			const oView = this.getView();
-			try {
-				oView.setBusy(true);
-				const oData = await Utils.readOdataCall.call(this, "/ZLineSet", aFilter);
-				oLocalModel.setProperty("/LineDetails", oData.results);
-				oLocalModel.setProperty("/lineTableCount", (oData.results && oData.results.length));
-				oView.setBusy(false);
-			} catch (error) {
-				oView.setBusy(false);
-				Utils.displayErrorMessagePopup("Error while fetching PR Item Details" + error?.message);
-			}
+			oView.byId("idPRDetailsListTable").getBinding("items").filter(aFilter);
+		},
+
+		updateFinishedTable: function (oEvent) {
+			const oLocalModel = this.getOwnerComponent().getModel("localModel");
+			oLocalModel.setProperty("/lineTableCount", oEvent.getParameter("total"));
 		}
 
 	});
