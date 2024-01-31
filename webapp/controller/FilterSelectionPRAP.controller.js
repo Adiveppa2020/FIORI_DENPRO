@@ -32,13 +32,15 @@ sap.ui.define([
             onSearchButtonNavToListPress: function () {
                 if (Utils.checkMandatoryParams.call(this)) {
                     const oView = this.getView();
+                    const sRC = this.byId("idReleaseCodeInput").getSelectedKey() || oView.byId("idReleaseCodeInput").getValue();
+                    const sDT = this.byId("idDocType").getSelectedKey() || oView.byId("idDocType").getValue();
                     this.getRouter().navTo("prlistpage", {
-                        releaseCode: this.byId("idReleaseCodeInput").getSelectedKey(),
+                        releaseCode: sRC,
                         "?query": {
                             plant: oView.byId("idPlantInput").getValue(),
                             material: oView.byId("idMaterialInput").getValue(),
                             purchaseReqNo: oView.byId("idPurchaseReqNoInput").getValue(),
-                            docType: oView.byId("idDocType").getSelectedKey()
+                            docType: sDT
                         }
                     });
                 }

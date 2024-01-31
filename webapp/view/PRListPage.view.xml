@@ -6,7 +6,7 @@
             <Table id="idPRListTable" mode="MultiSelect"
                 multiSelectMode="ClearAll"
                 items="{path: '/ZHeadSet', parameters: {expand: 'ZITEMNAV'}}"
-                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="30"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="20"
                 growingScrollToLoad="true"
                 selectionChange="onSelectPRList" updateFinished="updateFinishedTable" > 
                 <headerToolbar>
@@ -52,7 +52,7 @@
                      enabled="{localModel>/enableListPRActions}"
                      press="onDetailsButtonNavToPRdetailsPagePress"/>
 				<Button type="Success" text="{i18n>approve}" enabled="{localModel>/enableListPRActions}"
-                    press="onPressApproveHead"/>
+                    press="onPressApproveHeaderItem"/>
 				<Button type="Negative" text="{i18n>reject}" enabled="{localModel>/enableListPRActions}"/>
 			</OverflowToolbar>
 		</footer>

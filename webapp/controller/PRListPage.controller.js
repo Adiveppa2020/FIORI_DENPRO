@@ -59,12 +59,12 @@ sap.ui.define([
 			if (aSelectedContext && aSelectedContext.length === 1) {
 				const oContext = aSelectedContext[0].getObject();
 				this.getRouter().navTo("prdetailslistpage", {
-					purchaseReqNo:oContext.BANFN,
+					purchaseReqNo: oContext.BANFN,
 					"?query": {
 						plant: oContext.WERKS,
 						releaseCode: oContext.FRGZU,
 						material: oContext.MATNR,
-						docType:oContext.BSART
+						docType: oContext.BSART
 					}
 				});
 			} else {
@@ -84,19 +84,6 @@ sap.ui.define([
 			Utils.updateActionEnable.call(this, aSelectedContext);
 		},
 
-		onPressApproveHead: async function () {
-			const oView = this.getView();
-			try {
-				const oPayload = {};
-				oView.setBusy(true);
-				await Utils.updateOdataCall.call(this, "/ZSTOCK_QTYSet", oPayload);
-				oView.setBusy(false);
-			} catch (error) {
-				oView.setBusy(false);
-				Utils.displayErrorMessagePopup("Error while updating PR List" + error?.message);
-			}
-		},
-
 		onPressStockView: async function () {
 			const oLocalModel = this.getOwnerComponent().getModel("localModel");
 			const oView = this.getView();
@@ -113,6 +100,39 @@ sap.ui.define([
 			} else {
 				Utils.displayErrorMessagePopup(Utils.getI18nText(oView, "errorMessageMultiSelect"));
 			}
-		}
+		},
+
+		closeStockViewDialog: function (oEvent) {
+			const dialog = oEvent?.getSource()?.getParent();
+			dialog?.close();
+		},
+
+		updateFinishedStockTable: function (oEvent) {
+			const oLocalModel = this.getOwnerComponent().getModel("localModel");
+			oLocalModel.setProperty("/stockTableCount", oEvent.getParameter("total"));
+			const aContext = oEvent.getSource().getBinding("items").getContexts();
+			if (aContext && aContext.length > 0) {
+				const oContext = aContext[0].getObject();
+				oLocalModel.setProperty("/stockMaterial", oContext.MATNR + "(" + oContext.MAKTX + ")");
+			} else {
+				oLocalModel.setProperty("/stockMaterial", "");
+			}
+			
+		},
+
+		onPressApproveHeaderItem: async function () {
+			const oView = this.getView();
+			try {
+				const oPayload = {};
+				oView.setBusy(true);
+				await Utils.updateOdataCall.call(this, "/ZHeadSet", oPayload);
+				oView.setBusy(false);
+			} catch (error) {
+				oView.setBusy(false);
+				Utils.displayErrorMessagePopup("Error while updating PR List" + error?.message);
+			}
+		},
+
+
 	});
 });

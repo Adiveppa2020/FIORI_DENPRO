@@ -5,7 +5,7 @@
         <content>
             <Table id="idPRDetailsListTable"
                 items="{/ZLineSet}"
-                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="30"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="20"
                 growingScrollToLoad="true" updateFinished="updateFinishedTable">
                 <headerToolbar>
                     <OverflowToolbar>

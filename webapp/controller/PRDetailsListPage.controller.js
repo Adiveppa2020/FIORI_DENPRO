@@ -41,7 +41,11 @@ sap.ui.define([
 				{
 					sPath: "BANFN",
 					sValue: param.purchaseReqNo
-				}
+				},
+				// {
+				// 	sPath: "MATNR",
+				// 	sValue: param["?query"].material
+				// }
 			]);
 			const oView = this.getView();
 			oView.byId("idPRDetailsListTable").getBinding("items").filter(aFilter);
