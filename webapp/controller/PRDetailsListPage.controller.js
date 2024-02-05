@@ -92,6 +92,8 @@ sap.ui.define([
 		onPressApproveOrRejectLineItem: async function (oEvent, sAction) {
 			const oView = this.getView();
 			try {
+				const sconfirmMsg = Utils.getI18nText(oView, (sAction === "Accept" ? "mgsConfirmAccept" : "mgsConfirmReject"));
+				await Utils.displayConfirmMessageBox(sconfirmMsg, "Proceed");
 				const aContext = oView.byId("idPRDetailsListTable").getBinding("items").getContexts();
 				const oPayload = Utils.getLineItemSetUpdatePlayload.call(this, aContext, this.supplyPlant, sAction, this.HeadSetItem);
 				oView.setBusy(true);
@@ -103,8 +105,16 @@ sap.ui.define([
 				}
 			} catch (error) {
 				oView.setBusy(false);
-				Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
+				if (error && !error.popup) {
+					Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
+				}				
 			}
+		},
+
+		onChangeApprovedQty: function (oEvent, sProperty) {
+            const sValue = oEvent.getSource().getValue();
+            const oContext = oEvent.getSource().getBinding("value").getContext() || {};
+			oContext.getModel().setProperty(oContext.getPath() + sProperty, sValue);
 		}
 
 	});

@@ -54,9 +54,27 @@ sap.ui.define([
         }.bind(this)));
     }
 
+    async function displayConfirmMessageBox(sConfirmMessage, sBtn) {
+        return new Promise(function (resolve, reject) {
+            sBtn = MessageBox.Action.YES;
+            MessageBox.confirm(sConfirmMessage, {
+                actions: [sBtn, MessageBox.Action.CANCEL],
+                emphasizedAction: sBtn,
+                onClose: (sAction) => {
+                    if (sAction === sBtn) {
+                        resolve();
+                    } else {
+                        reject({message: "Action cancelled.", popup: true});
+                    }
+                }
+            });
+        });
+    }
+
     return {
         getI18nText,
         displayErrorMessagePopup,
+        displayConfirmMessageBox,
         checkMandatoryParams: function () {
             let oInputlRequire = checkInputValue(this.getView());
             if (oInputlRequire.error) {
