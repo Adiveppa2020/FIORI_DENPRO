@@ -1,6 +1,6 @@
 <mvc:View controllerName="zprap.zfprap.controller.PRListPage"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
+    xmlns="sap.m" xmlns:customData="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <Page id="idListPage" title="{i18n>title}">
         <content>
             <Table id="idPRListTable" mode="MultiSelect"
@@ -38,7 +38,7 @@
                         <cells>
                             <Text text="{MATNR}" />
                             <Text text="{BANFN}" />
-                            <Input value="{A_MENGE}"/>
+                            <Input value="{A_MENGE}" editable="false"/>
                             <Input value="{RESWK}" />
                         </cells>
                     </ColumnListItem>
@@ -47,13 +47,19 @@
         </content>
         <footer>
 			<OverflowToolbar>
+                <Button type="Attention" text="{i18n>supPlant}" 
+                    enabled="{localModel>/enableListPRActions}"
+                    press="onPressSupplyPlant"/>
 				<ToolbarSpacer/>
 				<Button type="Emphasized" text="{i18n>details}" 
                      enabled="{localModel>/enableListPRActions}"
                      press="onDetailsButtonNavToPRdetailsPagePress"/>
-				<Button type="Success" text="{i18n>approve}" enabled="{localModel>/enableListPRActions}"
-                    press="onPressApproveHeaderItem"/>
-				<Button type="Negative" text="{i18n>reject}" enabled="{localModel>/enableListPRActions}"/>
+				<Button type="Success" text="{i18n>approve}" 
+                    enabled="{localModel>/enableListPRActions}"
+                    press="onPressApproveHeaderItem($event, 'Accept')"/>
+				<Button type="Negative" text="{i18n>reject}" 
+                    enabled="{localModel>/enableListPRActions}"
+                    press="onPressApproveHeaderItem($event, 'Reject')"/>
 			</OverflowToolbar>
 		</footer>
     </Page>

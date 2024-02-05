@@ -34,6 +34,26 @@ sap.ui.define([
         });
     }
 
+
+    async function updatePRList(sEntityName, aPayload, oDataModel) {
+        return Promise.all(aPayload.map(function (oPayload) {
+            return new Promise(function (resolve, reject) {
+                oDataModel.update(sEntityName, oPayload,
+                    {
+                        method: "POST",
+                        groupId: "GID",
+                        changeSetId: "changeSetId" + oPayload.MATNR,
+                        success: function (oData, response) {
+                            resolve(oData);
+                        },
+                        error: function (oError) {
+                            reject(oError);
+                        }
+                    });
+            });
+        }.bind(this)));
+    }
+
     return {
         getI18nText,
         displayErrorMessagePopup,
@@ -56,7 +76,7 @@ sap.ui.define([
             return aFilter;
         },
 
-        readOdataCall: function (sEntityName, aFilter, urlParams) {
+        readOdataCall: async function (sEntityName, aFilter, urlParams) {
             const oDataModel = this.getOwnerComponent().getModel();
             return new Promise(function (resolve, reject) {
                 oDataModel.read(sEntityName, {
@@ -72,19 +92,14 @@ sap.ui.define([
             });
         },
 
-        updateOdataCall: function (sEntityName, oData) {
+        updateOdataCallList: async function (sEntityName, aPayload) {
             const oDataModel = this.getOwnerComponent().getModel();
-            return new Promise(function (resolve, reject) {
-                oDataModel.update(sEntityName, oData,
-                    {
-                        success: function (oData, response) {
-                            resolve(oData);
-                        },
-                        error: function (oError) {
-                            reject(oError);
-                        }
-                    });
-            });
+            oDataModel.sDefaultUpdateMethod = "POST";
+            const aDifGrp = oDataModel.getDeferredGroups();
+            aDifGrp.push("updatePRHeadList");
+            const aResponse = await updatePRList.call(this, sEntityName, aPayload, oDataModel);
+            console.log(aResponse);
+            return aResponse;
         },
 
         updateActionEnable: function (aSelectedContext) {
@@ -113,6 +128,89 @@ sap.ui.define([
                 oValueHelpDialog.open();
                 oValueHelpDialog._oSubHeader && oValueHelpDialog._oSubHeader.setVisible(false);
             }.bind(this));
+        },
+
+        getHeadSetUpdatePlayload: function (aSelectedContext, sSupplyPlant, sAction) {
+            const oView = this.getView();
+            const aPayload = [];
+            if (aSelectedContext && aSelectedContext.length > 0) {
+                let oPayload = {};
+                aSelectedContext.forEach(function (oContext) {
+                    oPayload = oContext.getObject();
+                    delete oPayload.__metadata;
+                    oPayload.ACTION = sAction;
+                    oPayload.RESWK = sSupplyPlant || oPayload.RESWK;
+                    const aLineItemContext = oContext.getObject().ZITEMNAV.__list;
+                    const aLineItem = [];
+                    aLineItemContext.forEach(function (sContextLine) {
+                        const oLineItem = oContext.getModel().getContext("/" + sContextLine).getObject();
+                        oLineItem.RESWK = sSupplyPlant || oLineItem.RESWK;
+                        delete oLineItem.__metadata;
+                        aLineItem.push(oLineItem);
+                    });
+                    oPayload.ZITEMNAV = aLineItem;
+                    aPayload.push(oPayload);
+                });
+            } else {
+                displayErrorMessagePopup(getI18nText(oView, "errorMessageNoItemSelected"));
+            }
+            return aPayload;
+
+        },
+
+        getLineItemSetUpdatePlayload: function (aContext, sSupplyPlant, sAction, oHeadItem) {
+            const oView = this.getView();
+            const oPayload = oHeadItem;
+            delete oPayload.__metadata;
+            oPayload.ACTION = sAction;
+            oPayload.RESWK = sSupplyPlant || oPayload.RESWK;
+            const aNavItems = [];
+            if (aContext && aContext.length > 0) {
+                aContext.forEach(function (oContext) {
+                    const oLineItem = oContext.getObject();
+                    delete oLineItem.__metadata;
+                    oLineItem.RESWK = sSupplyPlant || oLineItem.RESWK;
+                    aNavItems.push(oLineItem);
+                });
+                oPayload.ZITEMNAV = aNavItems;
+            } else {
+                displayErrorMessagePopup(getI18nText(oView, "errorMessageNoItemSelected"));
+            }
+            return oPayload;
+
+        },
+
+        openSupplyPlantDialog: function () {
+            const oView = this.getView();
+            if (!this._supplyPlantDialog) {
+                this._supplyPlantDialog = Fragment.load({
+                    id: oView.getId(),
+                    name: "zprap.zfprap.fragments.SupplyPlantDialog",
+                    controller: this
+                }).then(function (supplyPlantDialog) {
+                    oView.addDependent(supplyPlantDialog);
+                    return supplyPlantDialog;
+                });
+            }
+            this._supplyPlantDialog.then(function (supplyPlantDialog) {
+                supplyPlantDialog.open();
+            }.bind(this));
+        },
+
+        updateSupplyPlantToHeadList: function (sPlant) {
+            const oView = this.getView();
+            const aContext = oView.byId("idPRListTable").getBinding("items").getContexts() || [];
+            aContext.forEach(function (item) {
+                item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+            });
+        },
+
+        updateSupplyPlantToLineItemList: function (sPlant) {
+            const oView = this.getView();
+            const aContext = oView.byId("idPRDetailsListTable").getBinding("items").getContexts() || [];
+            aContext.forEach(function (item) {
+                item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+            });
         }
     }
 });
