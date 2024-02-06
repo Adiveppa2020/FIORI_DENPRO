@@ -37,7 +37,7 @@ sap.ui.define([
                     enableListPRActions: false,
                     stockTableCount: 0,
                     StockDetails: [],
-                    enableListPRDetailsActions: true
+                    enableListPRDetailsActions: false
                 });
             }
         };

@@ -20,6 +20,7 @@ sap.ui.define([
 		loadData: async function (param) {
 			const oLocalModel = this.getOwnerComponent().getModel("localModel");
 			oLocalModel.setProperty("/enableListPRActions", false);
+			this.releaseCode = param.releaseCode;
 			const aFilter = Utils.getFilterArray([
 				{
 					sPath: "MATNR",
@@ -56,7 +57,7 @@ sap.ui.define([
 					purchaseReqNo: oContext.BANFN,
 					"?query": {
 						plant: oContext.WERKS,
-						releaseCode: oContext.FRGZU,
+						releaseCode: this.releaseCode,
 						material: oContext.MATNR,
 						docType: oContext.BSART
 					}
@@ -76,6 +77,9 @@ sap.ui.define([
 			oLocalModel.setProperty("/headTableCount", oEvent.getParameter("total"));
 			const aSelectedContext = oEvent.getSource().getSelectedContexts() || [];
 			Utils.updateActionEnable.call(this, aSelectedContext);
+			if (this.supplyPlant) {
+				Utils.updateSupplyPlantToHeadList.call(this, this.supplyPlant);
+			}
 		},
 
 		onPressStockView: async function () {
@@ -94,14 +98,15 @@ sap.ui.define([
 				Utils.displayErrorMessagePopup(Utils.getI18nText(oView, "errorMessageMultiSelect"));
 			}
 		},
-		
+
 		onPressApproveOrRejectHeaderItem: async function (oEvent, sAction) {
 			const oView = this.getView();
 			try {
+				const oTable = oView.byId("idPRListTable");
 				const sconfirmMsg = Utils.getI18nText(oView, (sAction === "Accept" ? "mgsConfirmAcceptHead" : "mgsConfirmRejectHead"));
 				await Utils.displayConfirmMessageBox(sconfirmMsg, "Proceed");
-				const aSelectedContext = oView.byId("idPRListTable").getSelectedContexts();
-				const oPayload = Utils.getHeadSetUpdatePlayload.call(this, aSelectedContext, this.supplyPlant, sAction);
+				const aSelectedContext = oTable.getSelectedContexts();
+				const oPayload = Utils.getHeadSetUpdatePlayload.call(this, aSelectedContext, this.supplyPlant, sAction, this.releaseCode);
 				oView.setBusy(true);
 				const aResponse = await Utils.updateOdataCallList.call(this, "/ZHeadSet", oPayload);
 				oView.setBusy(false);
@@ -109,6 +114,7 @@ sap.ui.define([
 					const msg = Utils.getI18nText(oView, (sAction === "Accept" ? "msgApproveSuccess" : "msgRejectSuccess"));
 					MessageToast.show(msg);
 				}
+				oTable.getBinding("items").refresh();
 			} catch (error) {
 				oView.setBusy(false);
 				if (error && !error.popup) {

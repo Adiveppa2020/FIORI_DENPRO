@@ -129,6 +129,15 @@ sap.ui.define([
             oLocalModel.setProperty("/enableListPRActions", false);
         },
 
+        updateActionEnableDetailsPage: function (aSelectedContext) {
+            const oLocalModel = this.getOwnerComponent().getModel("localModel");
+            if (aSelectedContext && aSelectedContext.length > 0) {
+                oLocalModel.setProperty("/enableListPRDetailsActions", true);
+                return;
+            }
+            oLocalModel.setProperty("/enableListPRDetailsActions", false);
+        },
+
         openStoackDetailsFragment: function (aFilter) {
             const oView = this.getView();
             if (!this._stockDetailTableDialog) {
@@ -148,7 +157,7 @@ sap.ui.define([
             }.bind(this));
         },
 
-        getHeadSetUpdatePlayload: function (aSelectedContext, sSupplyPlant, sAction) {
+        getHeadSetUpdatePlayload: function (aSelectedContext, sSupplyPlant, sAction, releaseCode) {
             const oView = this.getView();
             const aPayload = [];
             if (aSelectedContext && aSelectedContext.length > 0) {
@@ -156,8 +165,9 @@ sap.ui.define([
                 aSelectedContext.forEach(function (oContext) {
                     oPayload = oContext.getObject();
                     delete oPayload.__metadata;
-                    oPayload.ACTION = sAction;
+                    oPayload.ACTION = sAction.toUpperCase();
                     oPayload.RESWK = sSupplyPlant || oPayload.RESWK;
+                    oPayload.FRGZU = releaseCode;
                     const aLineItemContext = oContext.getObject().ZITEMNAV.__list;
                     const aLineItem = [];
                     aLineItemContext.forEach(function (sContextLine) {
@@ -176,12 +186,13 @@ sap.ui.define([
 
         },
 
-        getLineItemSetUpdatePlayload: function (aContext, sSupplyPlant, sAction, oHeadItem) {
+        getLineItemSetUpdatePlayload: function (aContext, sSupplyPlant, sAction, oHeadItem, releaseCode) {
             const oView = this.getView();
             const oPayload = oHeadItem;
             delete oPayload.__metadata;
-            oPayload.ACTION = sAction;
+            oPayload.ACTION = sAction.toUpperCase();
             oPayload.RESWK = sSupplyPlant || oPayload.RESWK;
+            oPayload.FRGZU = releaseCode;
             const aNavItems = [];
             if (aContext && aContext.length > 0) {
                 aContext.forEach(function (oContext) {
@@ -219,7 +230,10 @@ sap.ui.define([
             const oView = this.getView();
             const aContext = oView.byId("idPRListTable").getBinding("items").getContexts() || [];
             aContext.forEach(function (item) {
-                item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+                const oContext = item.getObject();
+                if (oContext && (oContext.RESWK !== sPlant)) {
+                    item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+                }
             });
         },
 
@@ -227,7 +241,10 @@ sap.ui.define([
             const oView = this.getView();
             const aContext = oView.byId("idPRDetailsListTable").getBinding("items").getContexts() || [];
             aContext.forEach(function (item) {
-                item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+                const oContext = item.getObject();
+                if (oContext && (oContext.RESWK !== sPlant)) {
+                    item.getModel().setProperty(item.getPath() + "/RESWK", sPlant);
+                }
             });
         }
     }

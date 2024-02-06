@@ -6,9 +6,9 @@
         <content>
             <Table id="idPRDetailsListTable"
                 items="{/ZLineSet}"
-                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="20"
+                sticky="ColumnHeaders,HeaderToolbar" growing="true" growingThreshold="50"
                 growingScrollToLoad="true" updateFinished="updateFinishedTable"
-                class="displayFlex">
+                class="displayFlex" mode="SingleSelectLeft" selectionChange="onSelectPRDetailsList">
                 <headerToolbar>
                     <OverflowToolbar>
                         <content>

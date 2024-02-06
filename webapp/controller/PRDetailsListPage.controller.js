@@ -19,6 +19,12 @@ sap.ui.define([
 			this.supplyPlant = "";
 		},
 
+		clearTableSelection: function () {
+			const oLocalModel = this.getOwnerComponent().getModel("localModel");
+			oLocalModel.setProperty("/enableListPRDetailsActions", false);
+			this.byId("idPRDetailsListTable").removeSelections();
+		},
+
 		onBackButtonNavToPRListPagePress: function () {
 			var oHistory, sPreviousHash;
 			oHistory = History.getInstance();
@@ -32,6 +38,7 @@ sap.ui.define([
 
 		loadData: async function (param) {
 			this.material = param["?query"].material;
+			this.releaseCode =  param["?query"].releaseCode;
 			const aFilter = Utils.getFilterArray([
 				{
 					sPath: "BANFN",
@@ -53,6 +60,7 @@ sap.ui.define([
 			} catch (error) {
 				Utils.displayErrorMessagePopup("Error while fetching Head Set data - " + error?.message);
 			}
+			this.clearTableSelection();
 		},
 
 		updateFinishedTable: function (oEvent) {
@@ -92,10 +100,11 @@ sap.ui.define([
 		onPressApproveOrRejectLineItem: async function (oEvent, sAction) {
 			const oView = this.getView();
 			try {
+				const oTable = oView.byId("idPRDetailsListTable");
 				const sconfirmMsg = Utils.getI18nText(oView, (sAction === "Accept" ? "mgsConfirmAccept" : "mgsConfirmReject"));
 				await Utils.displayConfirmMessageBox(sconfirmMsg, "Proceed");
-				const aContext = oView.byId("idPRDetailsListTable").getBinding("items").getContexts();
-				const oPayload = Utils.getLineItemSetUpdatePlayload.call(this, aContext, this.supplyPlant, sAction, this.HeadSetItem);
+				const aContext = oTable.getSelectedContexts();
+				const oPayload = Utils.getLineItemSetUpdatePlayload.call(this, aContext, this.supplyPlant, sAction, this.HeadSetItem, this.releaseCode);
 				oView.setBusy(true);
 				const aResponse = await Utils.updateOdataCallList.call(this, "/ZHeadSet", [oPayload]);
 				oView.setBusy(false);
@@ -103,12 +112,19 @@ sap.ui.define([
 					const msg = Utils.getI18nText(oView, (sAction === "Accept" ? "msgApproveSuccess" : "msgRejectSuccess"));
 					MessageToast.show(msg);
 				}
+				oTable.getBinding("items").refresh();
+				this.clearTableSelection();
 			} catch (error) {
 				oView.setBusy(false);
 				if (error && !error.popup) {
 					Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
 				}				
 			}
+		},
+
+		onSelectPRDetailsList: function (oEvent) {
+			const aSelectedContext = oEvent.getSource().getSelectedContexts() || [];
+			Utils.updateActionEnableDetailsPage.call(this, aSelectedContext);
 		}
 
 	});

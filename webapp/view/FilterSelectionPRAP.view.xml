@@ -22,7 +22,7 @@
                     <Input id="idPurchaseReqNoInput"
                         showValueHelp="true" valueHelpRequest="onInputMaterialsValueHelpRequest"
                         customData:dialogName="PRNOValueHelpDialog"
-                        customData:FilterProperty="{prop1: 'BANFN', prop2: 'BNFPO'}"
+                        customData:FilterProperty="{prop1: 'Banfn', prop2: 'Bnfpo'}"
                         value="{localData>/filterValues/purchaseReqNo}"
                         change="onChangeInputValue($event, '/filterValues/purchaseReqNo')"/>
                     <Label text="{i18n>plant}" />
