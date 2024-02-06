@@ -56,6 +56,12 @@ sap.ui.define(
         }
   
       },
+
+      onChangeApprovedQty: function (oEvent, sProperty) {
+              const sValue = oEvent.getSource().getValue();
+              const oContext = oEvent.getSource().getBinding("value").getContext() || {};
+        oContext.getModel().setProperty(oContext.getPath() + sProperty, sValue);
+      }
   
 
 

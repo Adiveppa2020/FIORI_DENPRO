@@ -95,9 +95,11 @@ sap.ui.define([
 			}
 		},
 		
-		onPressApproveHeaderItem: async function (oEvent, sAction) {
+		onPressApproveOrRejectHeaderItem: async function (oEvent, sAction) {
 			const oView = this.getView();
 			try {
+				const sconfirmMsg = Utils.getI18nText(oView, (sAction === "Accept" ? "mgsConfirmAcceptHead" : "mgsConfirmRejectHead"));
+				await Utils.displayConfirmMessageBox(sconfirmMsg, "Proceed");
 				const aSelectedContext = oView.byId("idPRListTable").getSelectedContexts();
 				const oPayload = Utils.getHeadSetUpdatePlayload.call(this, aSelectedContext, this.supplyPlant, sAction);
 				oView.setBusy(true);
@@ -109,7 +111,9 @@ sap.ui.define([
 				}
 			} catch (error) {
 				oView.setBusy(false);
-				Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
+				if (error && !error.popup) {
+					Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
+				}
 			}
 		}
 

@@ -109,12 +109,6 @@ sap.ui.define([
 					Utils.displayErrorMessagePopup("Error while updating PR List - " + error?.message);
 				}				
 			}
-		},
-
-		onChangeApprovedQty: function (oEvent, sProperty) {
-            const sValue = oEvent.getSource().getValue();
-            const oContext = oEvent.getSource().getBinding("value").getContext() || {};
-			oContext.getModel().setProperty(oContext.getPath() + sProperty, sValue);
 		}
 
 	});
